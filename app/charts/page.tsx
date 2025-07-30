@@ -1,6 +1,9 @@
 import { Metadata } from 'next'
 import { ChartsHeader } from '@/components/charts-header'
+import { ChartsFooter } from '@/components/charts-footer'
+import RightPanel from '@/components/right-panel'
 import { PageTransition } from '@/components/page-transition'
+import { TradingViewChart } from '@/components/TradingViewChart'
 
 export const metadata: Metadata = {
   title: 'Charts | ViewMarket',
@@ -10,27 +13,18 @@ export const metadata: Metadata = {
 export default function ChartsPage() {
   return (
     <PageTransition>
-      <div className="min-h-screen bg-background">
+      <div className="h-screen bg-background overflow-hidden">
         <ChartsHeader />
+        <RightPanel />
         
         {/* Main Content Area */}
-        <main className="mx-auto max-w-7xl px-6 py-8">
-          <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
-            <div className="text-center space-y-4">
-              <h1 className="text-3xl font-bold text-foreground">
-                Charts Dashboard
-              </h1>
-              <p className="text-muted-foreground max-w-md mx-auto">
-                Welcome to your trading dashboard. Chart components and analytics will be added here.
-              </p>
-              <div className="w-full max-w-2xl mx-auto h-96 bg-muted/30 border-2 border-dashed border-border rounded-lg flex items-center justify-center">
-                <span className="text-2xl font-semibold text-muted-foreground">
-                  Charts Area
-                </span>
-              </div>
-            </div>
+        <main className="h-[calc(100vh-6rem)] overflow-hidden relative">
+          <div className="w-[calc(100%-3rem)] h-full">
+            <TradingViewChart />
           </div>
         </main>
+        
+        <ChartsFooter />
       </div>
     </PageTransition>
   )
