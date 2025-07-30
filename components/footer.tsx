@@ -16,18 +16,14 @@ type LinkGroup = {
 
 const links: LinkGroup[] = [
     {
-        group: 'Product',
+        group: 'Tools',
         items: [
             {
                 title: 'Features',
                 href: '#',
             },
             {
-                title: 'Solution',
-                href: '#',
-            },
-            {
-                title: 'Customers',
+                title: 'Broker',
                 href: '#',
             },
             {
@@ -40,39 +36,6 @@ const links: LinkGroup[] = [
             },
             {
                 title: 'About',
-                href: '#',
-            },
-        ],
-    },
-    {
-        group: 'Solution',
-        items: [
-            {
-                title: 'Startup',
-                href: '#',
-            },
-            {
-                title: 'Freelancers',
-                href: '#',
-            },
-            {
-                title: 'Organizations',
-                href: '#',
-            },
-            {
-                title: 'Students',
-                href: '#',
-            },
-            {
-                title: 'Collaboration',
-                href: '#',
-            },
-            {
-                title: 'Design',
-                href: '#',
-            },
-            {
-                title: 'Management',
                 href: '#',
             },
         ],

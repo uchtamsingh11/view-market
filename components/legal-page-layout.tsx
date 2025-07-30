@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
+import { ThemeToggle } from '@/components/theme-toggle'
 import FooterSection from '@/components/footer'
 
 interface LegalPageLayoutProps {
@@ -14,9 +15,12 @@ export default function LegalPageLayout({ title, children }: LegalPageLayoutProp
       {/* Header */}
       <header className="border-b border-border">
         <div className="mx-auto max-w-5xl px-6 py-4">
-          <Link href="/" aria-label="Go home" className="block size-fit">
-            <Logo />
-          </Link>
+          <div className="flex items-center justify-between">
+            <Link href="/" aria-label="Go home" className="block size-fit">
+              <Logo />
+            </Link>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 

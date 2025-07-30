@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Logo } from '@/components/logo'
 import { Menu, X, Calendar, MessageSquare, BarChart3, TrendingUp, Zap, Shield, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/theme-toggle'
 import React from 'react'
 import { cn } from '@/lib/utils'
 import { useScroll } from 'framer-motion'
@@ -196,13 +197,22 @@ export const HeroHeader = () => {
                                         </li>
                                     ))}
                                 </ul>
+                                <div className="mt-6 pt-6 border-t border-border">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-muted-foreground">Theme</span>
+                                        <ThemeToggle />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:items-center">
+                                <div className="hidden lg:block">
+                                    <ThemeToggle />
+                                </div>
                                 <Button
                                     asChild
                                     variant="outline"
                                     size="sm">
-                                    <Link href="#">
+                                    <Link href="/sign-in">
                                         <span>Sign In</span>
                                     </Link>
                                 </Button>
