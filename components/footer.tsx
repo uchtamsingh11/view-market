@@ -82,27 +82,27 @@ const links: LinkGroup[] = [
         items: [
             {
                 title: 'Privacy',
-                href: '#',
+                href: '/privacy',
             },
             {
                 title: 'Disclaimer',
-                href: '#',
+                href: '/disclaimer',
             },
             {
                 title: 'Terms of Service',
-                href: '#',
+                href: '/terms-of-service',
             },
             {
                 title: 'Risk Disclosure',
-                href: '#',
+                href: '/risk-disclosure',
             },
             {
                 title: 'Cookies Policy',
-                href: '#',
+                href: '/cookies-policy',
             },
             {
                 title: 'Refund Policy',
-                href: '#',
+                href: '/refund-policy',
             },
         ],
     },

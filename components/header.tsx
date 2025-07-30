@@ -1,22 +1,100 @@
 'use client'
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Calendar, MessageSquare, BarChart3, TrendingUp, Zap, Shield, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { cn } from '@/lib/utils'
 import { useScroll } from 'framer-motion'
 
-const menuItems = [
-    { name: 'Features', href: '#link' },
-    { name: 'Solution', href: '#link' },
-    { name: 'Pricing', href: '#link' },
-    { name: 'About', href: '#link' },
+// Dropdown data
+const featuresDropdown = [
+    {
+        icon: MessageSquare,
+        title: 'Caption Generation',
+        description: 'Generate captions using AI technology.',
+        href: '#caption-generation'
+    },
+    {
+        icon: Calendar,
+        title: 'Post Scheduling',
+        description: 'Schedule posts effortlessly in advance.',
+        href: '#post-scheduling'
+    },
+    {
+        icon: BarChart3,
+        title: 'Analytics Dashboard',
+        description: 'Track social media campaign performance.',
+        href: '#analytics'
+    }
 ]
+
+const tradingToolsDropdown = [
+    {
+        icon: TrendingUp,
+        title: 'Market Analysis',
+        description: 'Advanced market analysis tools.',
+        href: '#market-analysis'
+    },
+    {
+        icon: Zap,
+        title: 'Real-time Data',
+        description: 'Live market data and insights.',
+        href: '#real-time-data'
+    },
+    {
+        icon: Shield,
+        title: 'Risk Management',
+        description: 'Comprehensive risk management tools.',
+        href: '#risk-management'
+    }
+]
+
+const menuItems = [
+    { name: 'Features', href: '#features', hasDropdown: true, dropdownItems: featuresDropdown },
+    { name: 'Brokers', href: '#brokers' },
+    { name: 'Trading Tools', href: '#tools', hasDropdown: true, dropdownItems: tradingToolsDropdown },
+    { name: 'Pricing', href: '#pricing' },
+    { name: 'About', href: '#about' },
+]
+
+// Dropdown Component
+const DropdownMenu = ({ items, isVisible }: { items: typeof featuresDropdown, isVisible: boolean }) => {
+    return (
+        <div className={cn(
+            "absolute top-full left-0 mt-2 w-80 bg-background/95 backdrop-blur-xl border border-border rounded-lg shadow-lg transition-all duration-200 z-50",
+            isVisible ? "opacity-100 visible translate-y-0" : "opacity-0 invisible translate-y-2"
+        )}>
+            <div className="p-4">
+                <div className="space-y-3">
+                    {items.map((item, index) => {
+                        const Icon = item.icon
+                        return (
+                            <Link
+                                key={index}
+                                href={item.href}
+                                className="flex items-start gap-3 p-3 rounded-md hover:bg-accent/50 transition-colors duration-150 group"
+                            >
+                                <div className="flex-shrink-0 w-10 h-10 bg-primary/10 rounded-md flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                    <Icon className="w-5 h-5 text-primary" />
+                                </div>
+                                <div className="flex-1">
+                                    <h4 className="font-medium text-foreground text-sm mb-1">{item.title}</h4>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
+                                </div>
+                            </Link>
+                        )
+                    })}
+                </div>
+            </div>
+        </div>
+    )
+}
 
 export const HeroHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
     const [scrolled, setScrolled] = React.useState(false)
+    const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null)
 
     const { scrollYProgress } = useScroll()
 
@@ -53,12 +131,29 @@ export const HeroHeader = () => {
                             <div className="hidden lg:block">
                                 <ul className="flex gap-8 text-sm">
                                     {menuItems.map((item, index) => (
-                                        <li key={index}>
+                                        <li 
+                                            key={index} 
+                                            className="relative"
+                                            onMouseEnter={() => item.hasDropdown && setActiveDropdown(item.name)}
+                                            onMouseLeave={() => item.hasDropdown && setActiveDropdown(null)}
+                                        >
                                             <Link
                                                 href={item.href}
-                                                className="text-muted-foreground hover:text-accent-foreground block duration-150">
+                                                className="text-muted-foreground hover:text-accent-foreground flex items-center gap-1 duration-150 py-2">
                                                 <span>{item.name}</span>
+                                                {item.hasDropdown && (
+                                                    <ChevronDown className={cn(
+                                                        "w-4 h-4 transition-transform duration-200",
+                                                        activeDropdown === item.name && "rotate-180"
+                                                    )} />
+                                                )}
                                             </Link>
+                                            {item.hasDropdown && item.dropdownItems && (
+                                                <DropdownMenu 
+                                                    items={item.dropdownItems} 
+                                                    isVisible={activeDropdown === item.name}
+                                                />
+                                            )}
                                         </li>
                                     ))}
                                 </ul>
@@ -72,9 +167,32 @@ export const HeroHeader = () => {
                                         <li key={index}>
                                             <Link
                                                 href={item.href}
-                                                className="text-muted-foreground hover:text-accent-foreground block duration-150">
+                                                className="text-muted-foreground hover:text-accent-foreground flex items-center gap-1 duration-150">
                                                 <span>{item.name}</span>
+                                                {item.hasDropdown && (
+                                                    <ChevronDown className="w-4 h-4" />
+                                                )}
                                             </Link>
+                                            {item.hasDropdown && item.dropdownItems && (
+                                                <div className="mt-3 ml-4 space-y-2">
+                                                    {item.dropdownItems.map((dropdownItem, dropdownIndex) => {
+                                                        const Icon = dropdownItem.icon
+                                                        return (
+                                                            <Link
+                                                                key={dropdownIndex}
+                                                                href={dropdownItem.href}
+                                                                className="flex items-center gap-3 p-2 rounded-md hover:bg-accent/50 transition-colors duration-150 text-sm"
+                                                            >
+                                                                <Icon className="w-4 h-4 text-primary flex-shrink-0" />
+                                                                <div>
+                                                                    <div className="font-medium text-foreground">{dropdownItem.title}</div>
+                                                                    <div className="text-xs text-muted-foreground">{dropdownItem.description}</div>
+                                                                </div>
+                                                            </Link>
+                                                        )
+                                                    })}
+                                                </div>
+                                            )}
                                         </li>
                                     ))}
                                 </ul>
@@ -85,14 +203,14 @@ export const HeroHeader = () => {
                                     variant="outline"
                                     size="sm">
                                     <Link href="#">
-                                        <span>Login</span>
+                                        <span>Sign In</span>
                                     </Link>
                                 </Button>
                                 <Button
                                     asChild
                                     size="sm">
                                     <Link href="#">
-                                        <span>Sign Up</span>
+                                        <span>Get Started</span>
                                     </Link>
                                 </Button>
                             </div>

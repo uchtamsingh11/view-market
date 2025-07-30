@@ -1,6 +1,6 @@
 'use client'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { ChartBarIncreasingIcon, Database, Fingerprint, IdCard } from 'lucide-react'
+import { BarChart3, TrendingUp, Zap, Globe } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
@@ -13,46 +13,46 @@ export default function Features() {
     const images = {
         'item-1': {
             image: '/charts.png',
-            alt: 'Database visualization',
+            alt: 'Advanced charting interface',
         },
         'item-2': {
             image: '/music.png',
-            alt: 'Security authentication',
+            alt: 'Real-time market data',
         },
         'item-3': {
             image: '/mail2.png',
-            alt: 'Identity management',
+            alt: 'Lightning-fast execution',
         },
         'item-4': {
             image: '/payments.png',
-            alt: 'Analytics dashboard',
+            alt: 'Multi-broker connectivity',
         },
     }
 
     const features = [
         {
             id: 'item-1' as ImageKey,
-            icon: Database,
-            title: 'Advanced Database Management',
-            description: 'Powerful database tools with real-time visualization and analytics to help you manage your data efficiently.',
+            icon: BarChart3,
+            title: 'Advanced Charting Tools',
+            description: 'Professional-grade charts with 110+ technical indicators, drawing tools, and customizable layouts for comprehensive market analysis.',
         },
         {
             id: 'item-2' as ImageKey,
-            icon: Fingerprint,
-            title: 'Security & Authentication',
-            description: 'Enterprise-grade security features including multi-factor authentication and advanced user management.',
+            icon: TrendingUp,
+            title: 'Real-Time Market Data',
+            description: 'Live streaming quotes, level 2 data, and real-time market updates from global exchanges with ultra-low latency feeds.',
         },
         {
             id: 'item-3' as ImageKey,
-            icon: IdCard,
-            title: 'Identity Management',
-            description: 'Comprehensive identity and access management solutions for teams of all sizes.',
+            icon: Zap,
+            title: 'Lightning-Fast Execution',
+            description: 'Ultra-low latency order execution with direct market access and smart order routing for optimal trade fills.',
         },
         {
             id: 'item-4' as ImageKey,
-            icon: ChartBarIncreasingIcon,
-            title: 'Analytics Dashboard',
-            description: 'Real-time analytics and reporting tools to track performance and make data-driven decisions.',
+            icon: Globe,
+            title: 'Multi-Broker Integration',
+            description: 'Seamless connectivity to 75+ brokers worldwide for stocks, forex, crypto, and commodities trading from one platform.',
         },
     ]
 
@@ -61,10 +61,10 @@ export default function Features() {
             <div className="mx-auto max-w-7xl px-6">
                 <div className="mx-auto max-w-2xl text-center mb-16">
                     <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                        Interactive Features
+                        Trading Platform Features
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
-                        Explore our comprehensive suite of tools designed to enhance your workflow
+                        Discover powerful trading tools designed to enhance your market analysis and execution
                     </p>
                 </div>
 

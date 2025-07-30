@@ -55,7 +55,7 @@ export default function HeroSection() {
                                     speedSegment={0.3}
                                     as="h1"
                                     className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16">
-                                    Build and Ship 10x faster with NS
+                                    Convert Your Trading Ideas Into Executions with AI
                                 </TextEffect>
                                 <TextEffect
                                     per="line"
@@ -64,7 +64,7 @@ export default function HeroSection() {
                                     delay={0.5}
                                     as="p"
                                     className="mt-8 max-w-2xl text-pretty text-lg">
-                                    Tailwindcss highly customizable components for building modern websites and applications that look and feel the way you mean it.
+                                    Advanced charting software with 75+ broker integrations and 110+ trading tools. Powered by AI to help you analyze markets, identify opportunities, and execute trades with confidence.
                                 </TextEffect>
 
                                 <AnimatedGroup
@@ -88,7 +88,7 @@ export default function HeroSection() {
                                             size="lg"
                                             className="rounded-xl px-5 text-base">
                                             <Link href="#link">
-                                                <span className="text-nowrap">Start Building</span>
+                                                <span className="text-nowrap">Start Trading</span>
                                             </Link>
                                         </Button>
                                     </div>
@@ -99,7 +99,7 @@ export default function HeroSection() {
                                         variant="ghost"
                                         className="h-10.5 rounded-xl px-5 text-base">
                                         <Link href="#link">
-                                            <span className="text-nowrap">Request a demo</span>
+                                            <span className="text-nowrap">View Demo</span>
                                         </Link>
                                     </Button>
                                 </AnimatedGroup>

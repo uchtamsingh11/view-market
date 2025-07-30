@@ -7,7 +7,7 @@ export default function LogoCloud() {
             <div className="group relative m-auto max-w-7xl px-6">
                 <div className="flex flex-col items-center md:flex-row">
                     <div className="md:max-w-44 md:border-r md:pr-6">
-                        <p className="text-end text-sm">Powering the best teams</p>
+                        <p className="text-end text-sm">Trusted by top brokers</p>
                     </div>
                     <div className="relative py-6 md:w-[calc(100%-11rem)]">
                         <InfiniteSlider
@@ -15,78 +15,153 @@ export default function LogoCloud() {
                             speed={40}
                             gap={112}>
                             <div className="flex">
-                                <img
-                                    className="mx-auto h-5 w-fit dark:invert"
-                                    src="https://html.tailus.io/blocks/customers/nvidia.svg"
-                                    alt="Nvidia Logo"
-                                    height="20"
-                                    width="auto"
-                                />
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Zerodha
+                                </div>
                             </div>
 
                             <div className="flex">
-                                <img
-                                    className="mx-auto h-4 w-fit dark:invert"
-                                    src="https://html.tailus.io/blocks/customers/column.svg"
-                                    alt="Column Logo"
-                                    height="16"
-                                    width="auto"
-                                />
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Upstox
+                                </div>
                             </div>
+                            
                             <div className="flex">
-                                <img
-                                    className="mx-auto h-4 w-fit dark:invert"
-                                    src="https://html.tailus.io/blocks/customers/github.svg"
-                                    alt="GitHub Logo"
-                                    height="16"
-                                    width="auto"
-                                />
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Angel One
+                                </div>
                             </div>
+                            
                             <div className="flex">
-                                <img
-                                    className="mx-auto h-5 w-fit dark:invert"
-                                    src="https://html.tailus.io/blocks/customers/nike.svg"
-                                    alt="Nike Logo"
-                                    height="20"
-                                    width="auto"
-                                />
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Groww
+                                </div>
                             </div>
+                            
                             <div className="flex">
-                                <img
-                                    className="mx-auto h-5 w-fit dark:invert"
-                                    src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg"
-                                    alt="Lemon Squeezy Logo"
-                                    height="20"
-                                    width="auto"
-                                />
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    ICICI Direct
+                                </div>
                             </div>
+                            
                             <div className="flex">
-                                <img
-                                    className="mx-auto h-4 w-fit dark:invert"
-                                    src="https://html.tailus.io/blocks/customers/laravel.svg"
-                                    alt="Laravel Logo"
-                                    height="16"
-                                    width="auto"
-                                />
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    HDFC Securities
+                                </div>
                             </div>
+                            
                             <div className="flex">
-                                <img
-                                    className="mx-auto h-7 w-fit dark:invert"
-                                    src="https://html.tailus.io/blocks/customers/lilly.svg"
-                                    alt="Lilly Logo"
-                                    height="28"
-                                    width="auto"
-                                />
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Kotak Securities
+                                </div>
                             </div>
-
+                            
                             <div className="flex">
-                                <img
-                                    className="mx-auto h-6 w-fit dark:invert"
-                                    src="https://html.tailus.io/blocks/customers/openai.svg"
-                                    alt="OpenAI Logo"
-                                    height="24"
-                                    width="auto"
-                                />
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    5Paisa
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Motilal Oswal
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Axis Direct
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Dhan
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Fyers
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Alice Blue
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Edelweiss (Nuvama)
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Sharekhan
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    IC Markets
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Pepperstone
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    FXTM
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    IG Markets
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Exness
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    OANDA
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    XM
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    FxPro
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    Tickmill
+                                </div>
+                            </div>
+                            
+                            <div className="flex">
+                                <div className="mx-auto h-5 w-fit flex items-center justify-center px-4 py-1 bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded text-sm font-semibold">
+                                    AvaTrade
+                                </div>
                             </div>
                         </InfiniteSlider>
 
