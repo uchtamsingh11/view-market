@@ -13,16 +13,17 @@ export const metadata: Metadata = {
 export default function ChartsPage() {
   return (
     <PageTransition>
-      <div className="h-screen bg-background overflow-hidden">
+      <div className="h-screen bg-background overflow-hidden flex flex-col">
         <ChartsHeader />
-        <RightPanel />
         
-        {/* Main Content Area */}
-        <main className="h-[calc(100vh-6rem)] overflow-hidden relative">
-          <div className="w-[calc(100%-3rem)] h-full">
+        {/* Main Content Area with Right Panel */}
+        <div className="flex-1 relative">
+          {/* Chart Container with right margin to avoid panel overlap */}
+          <main className="absolute inset-0 right-14 overflow-hidden">
             <TradingViewChart />
-          </div>
-        </main>
+          </main>
+          <RightPanel />
+        </div>
         
         <ChartsFooter />
       </div>

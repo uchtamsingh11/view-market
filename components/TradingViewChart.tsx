@@ -29,14 +29,16 @@ export function TradingViewChart() {
           },
           rightPriceScale: {
             borderColor: '#e2e8f0',
-            minimumWidth: 48, // Match right panel width (3rem = 48px)
             autoScale: true,
+            scaleMargins: {
+              top: 0.1,
+              bottom: 0.1,
+            },
           },
           timeScale: {
             borderColor: '#e2e8f0',
             timeVisible: true,
             secondsVisible: false,
-            minimumHeight: 48, // Match footer height (3rem = 48px)
           },
         })
 
@@ -89,6 +91,10 @@ export function TradingViewChart() {
     <div 
       ref={chartContainerRef} 
       className="w-full h-full bg-background"
+      style={{
+        paddingRight: '12px', // Small gap for visual clarity
+        marginRight: 0,
+      }}
     />
   )
 }
