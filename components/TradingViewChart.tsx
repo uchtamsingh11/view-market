@@ -34,6 +34,8 @@ export function TradingViewChart() {
               top: 0.1,
               bottom: 0.1,
             },
+            minimumWidth: 0,
+            entireTextOnly: false,
           },
           timeScale: {
             borderColor: '#e2e8f0',
@@ -45,6 +47,14 @@ export function TradingViewChart() {
         const lineSeries = chart.addLineSeries({
           color: '#2962FF',
           lineWidth: 2,
+        })
+        
+        // Apply scale margins directly to the series price scale
+        lineSeries.priceScale().applyOptions({
+          scaleMargins: {
+            top: 0.05,
+            bottom: 0.05,
+          },
         })
         
         lineSeries.setData([
@@ -91,10 +101,6 @@ export function TradingViewChart() {
     <div 
       ref={chartContainerRef} 
       className="w-full h-full bg-background"
-      style={{
-        paddingRight: '12px', // Small gap for visual clarity
-        marginRight: 0,
-      }}
     />
   )
 }

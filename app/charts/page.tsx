@@ -19,7 +19,7 @@ export default function ChartsPage() {
         {/* Main Content Area with Right Panel */}
         <div className="flex-1 relative">
           {/* Chart Container with right margin to avoid panel overlap */}
-          <main className="absolute inset-0 right-14 overflow-hidden">
+          <main className="absolute inset-0 right-12 overflow-hidden">
             <TradingViewChart />
           </main>
           <RightPanel />

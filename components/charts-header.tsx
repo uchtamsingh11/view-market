@@ -1,9 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useRouter } from 'next/navigation'
 import { LogOut, User, Search, Camera } from 'lucide-react'
+import { SymbolPopup } from '@/components/symbol-popup'
+import { IndicatorsPopup } from '@/components/indicators-popup'
+import { SocketPopup } from '@/components/socket-popup'
+import { SettingsPopup } from '@/components/settings-popup'
 import { BiCandles } from "react-icons/bi";
 import { PiPlugs } from "react-icons/pi";
 import { LuSave } from "react-icons/lu";
@@ -13,6 +18,10 @@ import { CiGrid32 } from "react-icons/ci";
 
 export function ChartsHeader() {
   const router = useRouter()
+  const [isSymbolPopupOpen, setIsSymbolPopupOpen] = useState(false)
+  const [isIndicatorsPopupOpen, setIsIndicatorsPopupOpen] = useState(false)
+  const [isSocketPopupOpen, setIsSocketPopupOpen] = useState(false)
+  const [isSettingsPopupOpen, setIsSettingsPopupOpen] = useState(false)
 
   const handleLogout = () => {
     // Simulate logout process
@@ -20,25 +29,27 @@ export function ChartsHeader() {
   }
 
   return (
-    <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-      <div className="relative flex h-12 items-center justify-between w-full">
-          {/* Profile */}
-          <div className="flex items-center pl-4 gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="p-2 hover:bg-accent/20"
-            >
-              <User className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="pr-8 justify-start"
-            >
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+    <>
+      <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+        <div className="relative flex h-12 items-center justify-between w-full">
+            {/* Profile */}
+            <div className="flex items-center pl-4 gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="p-2 hover:bg-accent/20"
+              >
+                <User className="w-5 h-5" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="pr-8 justify-start"
+                onClick={() => setIsSymbolPopupOpen(true)}
+              >
+                <Search className="w-4 h-4 mr-2" />
+                Symbol
+              </Button>
             <Button
               variant="outline"
               size="sm"
@@ -54,12 +65,14 @@ export function ChartsHeader() {
             <Button
               variant="outline"
               size="sm"
+              onClick={() => setIsIndicatorsPopupOpen(true)}
             >
               Indicators
             </Button>
             <Button
               variant="outline"
               size="sm"
+              onClick={() => setIsSocketPopupOpen(true)}
             >
               <PiPlugs className="w-5 h-5 mr-2" />
               socket
@@ -83,6 +96,7 @@ export function ChartsHeader() {
             <Button
               variant="outline"
               size="sm"
+              onClick={() => setIsSettingsPopupOpen(true)}
             >
               <IoSettingsOutline className="w-5 h-5" />
             </Button>
@@ -111,5 +125,10 @@ export function ChartsHeader() {
         </div>
       </div>
     </header>
+      {isSymbolPopupOpen && <SymbolPopup onClose={() => setIsSymbolPopupOpen(false)} />}
+      {isIndicatorsPopupOpen && <IndicatorsPopup onClose={() => setIsIndicatorsPopupOpen(false)} />}
+      {isSocketPopupOpen && <SocketPopup onClose={() => setIsSocketPopupOpen(false)} />}
+      {isSettingsPopupOpen && <SettingsPopup onClose={() => setIsSettingsPopupOpen(false)} />}
+    </>
   )
 }
