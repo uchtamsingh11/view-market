@@ -119,4 +119,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Remove any default padding/margin from chart containers */
+  .chart-container, 
+  .chart-container * {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }

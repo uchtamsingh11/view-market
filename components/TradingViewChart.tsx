@@ -1,9 +1,15 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
+import { IChartApi } from 'lightweight-charts';
 
-export function TradingViewChart() {
+interface TradingViewChartProps {
+  showCrosshair: boolean;
+}
+
+export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null)
+  const chartRef = useRef<IChartApi | null>(null)
 
   useEffect(() => {
     if (!chartContainerRef.current) return
@@ -11,11 +17,19 @@ export function TradingViewChart() {
     // Dynamic import to avoid SSR issues
     const initChart = async () => {
       try {
-        const { createChart } = await import('lightweight-charts')
+        const { createChart, CrosshairMode } = await import('lightweight-charts')
+        
+        // Wait for the container to be properly sized
+        await new Promise(resolve => setTimeout(resolve, 100))
+        
+        if (!chartContainerRef.current) return
+        
+        const containerWidth = chartContainerRef.current.clientWidth || chartContainerRef.current.offsetWidth
+        const containerHeight = chartContainerRef.current.clientHeight || chartContainerRef.current.offsetHeight
         
         const chart = createChart(chartContainerRef.current!, {
-          width: chartContainerRef.current!.clientWidth,
-          height: chartContainerRef.current!.clientHeight,
+          width: containerWidth,
+          height: containerHeight,
           layout: {
             background: { color: 'transparent' },
             textColor: '#1f2937',
@@ -25,7 +39,7 @@ export function TradingViewChart() {
             horzLines: { color: '#e2e8f0' },
           },
           crosshair: {
-            mode: 1,
+            mode: showCrosshair ? CrosshairMode.Normal : CrosshairMode.Hidden,
           },
           rightPriceScale: {
             borderColor: '#e2e8f0',
@@ -34,15 +48,37 @@ export function TradingViewChart() {
               top: 0.1,
               bottom: 0.1,
             },
-            minimumWidth: 0,
+            minimumWidth: 50,
             entireTextOnly: false,
+            visible: true,
+            borderVisible: false,
+            alignLabels: true,
+          },
+          leftPriceScale: {
+            visible: false,
           },
           timeScale: {
             borderColor: '#e2e8f0',
             timeVisible: true,
             secondsVisible: false,
+            barSpacing: 6,
+            fixLeftEdge: false,
+            fixRightEdge: true,
+          },
+          handleScroll: {
+            mouseWheel: true,
+            pressedMouseMove: true,
+            horzTouchDrag: true,
+            vertTouchDrag: true,
+          },
+          handleScale: {
+            axisPressedMouseMove: true,
+            mouseWheel: true,
+            pinch: true,
           },
         })
+
+        chartRef.current = chart
 
         const lineSeries = chart.addLineSeries({
           color: '#2962FF',
@@ -72,17 +108,37 @@ export function TradingViewChart() {
 
         const handleResize = () => {
           if (chartContainerRef.current && chart) {
+            const newWidth = chartContainerRef.current.clientWidth || chartContainerRef.current.offsetWidth
+            const newHeight = chartContainerRef.current.clientHeight || chartContainerRef.current.offsetHeight
+            
             chart.applyOptions({
-              width: chartContainerRef.current.clientWidth,
-              height: chartContainerRef.current.clientHeight,
+              width: newWidth,
+              height: newHeight,
             })
+            
+            // Force chart to redraw with proper dimensions
+            chart.timeScale().fitContent()
           }
+        }
+
+        // Use ResizeObserver for better resize detection
+        const resizeObserver = new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.target === chartContainerRef.current) {
+              handleResize()
+            }
+          }
+        })
+
+        if (chartContainerRef.current) {
+          resizeObserver.observe(chartContainerRef.current)
         }
 
         window.addEventListener('resize', handleResize)
 
         return () => {
           window.removeEventListener('resize', handleResize)
+          resizeObserver.disconnect()
           chart.remove()
         }
       } catch (error) {
@@ -97,10 +153,31 @@ export function TradingViewChart() {
     }
   }, [])
 
+  useEffect(() => {
+    if (chartRef.current) {
+      const { CrosshairMode } = require('lightweight-charts');
+      chartRef.current.applyOptions({
+        crosshair: {
+          mode: showCrosshair ? CrosshairMode.Normal : CrosshairMode.Hidden,
+        },
+      })
+    }
+  }, [showCrosshair])
+
   return (
-    <div 
-      ref={chartContainerRef} 
-      className="w-full h-full bg-background"
+    <div
+      ref={chartContainerRef}
+      className="w-full h-full bg-background chart-container"
+      data-chart-container="true"
+      style={{ 
+        paddingRight: 0,
+        marginRight: 0,
+        position: 'relative',
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+        minWidth: '100%',
+        minHeight: '100%'
+      }}
     />
   )
 }
