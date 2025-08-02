@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/components/theme-toggle'
 import { useRouter } from 'next/navigation'
 import { LogOut, Search, Camera } from 'lucide-react'
 import { SymbolPopup } from '@/components/symbol-popup'
+import { TimeFrameDropdown } from '@/components/time-frame-dropdown'
+import { CandlesticksDropdown } from '@/components/candlesticks-dropdown'
 import { IndicatorsPopup } from '@/components/indicators-popup'
 import { SocketPopup } from '@/components/socket-popup'
 import { SettingsPopup } from '@/components/settings-popup'
@@ -20,7 +21,7 @@ import { takeScreenshot } from '@/lib/screenshot';
 import { useToast } from '@/components/ui/toast';
 
 const Divider = () => (
-  <div className="h-[70%] w-px bg-gray-300 dark:bg-gray-700" />
+  <div className="h-6 w-px bg-white/50 mx-3" />
 );
 
 interface ChartsHeaderProps {
@@ -34,13 +35,10 @@ export function ChartsHeader({ isFullscreen = false, onToggleFullscreen }: Chart
   const [isIndicatorsPopupOpen, setIsIndicatorsPopupOpen] = useState(false)
   const [isSocketPopupOpen, setIsSocketPopupOpen] = useState(false)
   const [isSettingsPopupOpen, setIsSettingsPopupOpen] = useState(false)
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState('1m')
+  const [selectedChartType, setSelectedChartType] = useState('Candlesticks')
   const [isCapturingScreenshot, setIsCapturingScreenshot] = useState(false)
   const { showToast, ToastContainer } = useToast()
-
-  const handleLogout = () => {
-    // Simulate logout process
-    router.push('/')
-  }
 
   const handleScreenshot = async () => {
     if (isCapturingScreenshot) return
@@ -75,10 +73,11 @@ export function ChartsHeader({ isFullscreen = false, onToggleFullscreen }: Chart
   return (
     <>
       <header className="border-b-4 border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 screenshot-exclude">
-        <div className="relative flex h-10 items-center justify-between w-full pr-12">
-            {/* Profile */}
-            <div className="flex items-center pl-4 gap-3">
+        <div className="relative flex h-9 items-center justify-between w-full pr-12">
+            {/* Left side with Profile and other buttons with dividers */}
+            <div className="flex items-center pl-4">
               <ProfileButton />
+              <Divider />
               <div
                 className="flex items-center justify-start cursor-pointer"
                 onClick={() => setIsSymbolPopupOpen(true)}
@@ -87,67 +86,63 @@ export function ChartsHeader({ isFullscreen = false, onToggleFullscreen }: Chart
                 Symbol
               </div>
               <Divider />
-            <div className="cursor-pointer">1m</div>
-            <Divider />
-            <div className="cursor-pointer">
-              <BiCandles className="w-5 h-5" />
+              <TimeFrameDropdown
+                onSelect={setSelectedTimeFrame}
+                selectedTimeFrame={selectedTimeFrame}
+              />
+              <Divider />
+              <CandlesticksDropdown
+                onSelect={setSelectedChartType}
+                selectedChartType={selectedChartType}
+              />
+              <Divider />
+              <div
+                className="cursor-pointer"
+                onClick={() => setIsIndicatorsPopupOpen(true)}
+              >
+                Indicators
+              </div>
+              <Divider />
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => setIsSocketPopupOpen(true)}
+              >
+                <PiPlugs className="w-5 h-5 mr-2" />
+                socket
+              </div>
             </div>
-            <Divider />
-            <div
-              className="cursor-pointer"
-              onClick={() => setIsIndicatorsPopupOpen(true)}
-            >
-              Indicators
-            </div>
-            <Divider />
-            <div
-              className="flex items-center cursor-pointer"
-              onClick={() => setIsSocketPopupOpen(true)}
-            >
-              <PiPlugs className="w-5 h-5 mr-2" />
-              socket
-            </div>
-          </div>
 
-          {/* Right side actions */}
-          <div className="flex items-center gap-6 absolute right-4 top-1/2 transform -translate-y-1/2">
-            <div className="cursor-pointer">
-              <CiGrid32 className="w-5 h-5" />
-            </div>
-            <div
-              className="cursor-pointer"
-              onClick={onToggleFullscreen}
-              title={isFullscreen ? "Exit Fullscreen (ESC)" : "Enter Fullscreen"}
-            >
-              <AiOutlineFullscreen className="w-5 h-5" />
-            </div>
-            <div
-              className="cursor-pointer"
-              onClick={() => setIsSettingsPopupOpen(true)}
-            >
-              <IoSettingsOutline className="w-5 h-5" />
-            </div>
-            <div
-              className={`cursor-pointer ${isCapturingScreenshot ? 'opacity-50 cursor-not-allowed' : ''}`}
-              onClick={handleScreenshot}
-              aria-label="Screenshot"
-            >
-              <Camera className={`w-5 h-5 ${isCapturingScreenshot ? 'animate-pulse' : ''}`} />
-            </div>
-            <div className="cursor-pointer">
-              <LuSave className="w-5 h-5" />
-            </div>
-            <ThemeToggle />
-            
-            <div
-              className="cursor-pointer text-red-500 hover:text-red-600"
-              onClick={handleLogout}
-            >
-              <LogOut className="w-5 h-5" />
+            {/* Right side actions - no dividers, balanced spacing */}
+            <div className="flex items-center gap-6 absolute right-6 top-1/2 transform -translate-y-1/2">
+              <div className="cursor-pointer">
+                <CiGrid32 className="w-5 h-5" />
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={onToggleFullscreen}
+                title={isFullscreen ? "Exit Fullscreen (ESC)" : "Enter Fullscreen"}
+              >
+                <AiOutlineFullscreen className="w-5 h-5" />
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={() => setIsSettingsPopupOpen(true)}
+              >
+                <IoSettingsOutline className="w-5 h-5" />
+              </div>
+              <div
+                className={`cursor-pointer ${isCapturingScreenshot ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={handleScreenshot}
+                aria-label="Screenshot"
+              >
+                <Camera className={`w-5 h-5 ${isCapturingScreenshot ? 'animate-pulse' : ''}`} />
+              </div>
+              <div className="cursor-pointer">
+                <LuSave className="w-5 h-5" />
+              </div>
             </div>
         </div>
-      </div>
-    </header>
+      </header>
       {isSymbolPopupOpen && <SymbolPopup onClose={() => setIsSymbolPopupOpen(false)} />}
       {isIndicatorsPopupOpen && <IndicatorsPopup onClose={() => setIsIndicatorsPopupOpen(false)} />}
       {isSocketPopupOpen && <SocketPopup onClose={() => setIsSocketPopupOpen(false)} />}

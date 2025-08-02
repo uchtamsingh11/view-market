@@ -112,14 +112,14 @@ export function SymbolPopup({ onClose, onSymbolSelect }: SymbolPopupProps) {
         setSelectedIndex(prev => prev > 0 ? prev - 1 : 0);
       } else if (e.key === 'Enter' && filteredSymbols[selectedIndex]) {
         e.preventDefault();
-        // Handle symbol selection
-        console.log('Selected:', filteredSymbols[selectedIndex].name);
+        onSymbolSelect?.(filteredSymbols[selectedIndex].name);
+        onClose();
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose, filteredSymbols, selectedIndex]);
+  }, [onClose, filteredSymbols.length, selectedIndex, onSymbolSelect]);
 
   // Focus search input on mount
   useEffect(() => {
@@ -133,11 +133,18 @@ export function SymbolPopup({ onClose, onSymbolSelect }: SymbolPopupProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className={cn(
-        "w-full max-w-4xl h-[650px] rounded-lg shadow-xl overflow-hidden",
-        "bg-background"
-      )}>
+    <div 
+      className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div 
+        className={cn(
+          "w-full max-w-4xl h-[650px] rounded-lg shadow-md overflow-hidden",
+          "bg-background border border-border"
+        )}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header Section */}
         <div className="p-4 border-b border-border bg-background">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-medium text-foreground">Select Symbol</h2>
@@ -145,27 +152,29 @@ export function SymbolPopup({ onClose, onSymbolSelect }: SymbolPopupProps) {
               onClick={onClose}
               className="p-1 rounded-md hover:bg-accent text-muted-foreground transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-4 h-4" />
             </button>
           </div>
           
-          {/* Search Bar */}
+          {/* Enhanced Search Bar */}
           <div className="mt-3">
-            <input
-              type="text"
-              placeholder="Search symbols..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-input bg-input text-foreground placeholder-muted-foreground rounded-md focus:outline-none focus:ring-1 focus:ring-ring"
-            />
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search symbols..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full pl-10 pr-3 py-2 text-base border border-input bg-input text-foreground placeholder-muted-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+              />
+            </div>
           </div>
         </div>
 
         <div className="flex h-[570px]">
-          {/* Categories Sidebar */}
-          <div className="w-40 bg-background border-r border-border p-0">
+          {/* Enhanced Categories Sidebar */}
+          <div className="w-44 bg-background border-r border-border">
             <div className="h-full flex flex-col">
               {categories.map((category, index) => {
                 return (
@@ -173,10 +182,12 @@ export function SymbolPopup({ onClose, onSymbolSelect }: SymbolPopupProps) {
                     key={category.name}
                     onClick={() => setActiveCategory(category.name)}
                     className={cn(
-                      "text-left px-3 py-3 text-xs font-medium transition-all border-b last:border-b-0 border-border min-h-[52px] flex items-center",
+                      "text-left px-3 py-3 text-sm font-medium transition-all duration-150",
+                      "border-b border-border last:border-b-0 min-h-[48px] flex items-center",
+                      "hover:bg-accent hover:text-accent-foreground",
                       activeCategory === category.name
                         ? "bg-accent text-accent-foreground shadow-sm"
-                        : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                        : "text-muted-foreground"
                     )}
                   >
                     {category.name}
@@ -186,49 +197,55 @@ export function SymbolPopup({ onClose, onSymbolSelect }: SymbolPopupProps) {
             </div>
           </div>
 
-          {/* Main Content */}
+          {/* Enhanced Main Content */}
           <div className="flex-1 flex flex-col">
-            {/* Results */}
-            <div className="flex-1 overflow-y-hidden" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className="h-full overflow-y-scroll" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {/* Results Section */}
+            <div className="flex-1 overflow-y-hidden">
+              <div className="h-full overflow-y-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                 {filteredSymbols.length > 0 ? (
                   <div className="w-full">
                     {filteredSymbols.map((symbol, index) => (
                       <div
                         key={symbol.name}
                         className={cn(
-                          "group w-full px-3 py-2 cursor-pointer transition-all border-b border-border last:border-b-0",
+                          "group w-full px-3 py-2 cursor-pointer transition-all duration-150",
+                          "border-b border-border last:border-b-0",
+                          "hover:bg-accent hover:text-accent-foreground",
                           index === selectedIndex
-                            ? 'bg-accent'
-                            : 'hover:bg-accent/50'
+                            ? 'bg-accent text-accent-foreground'
+                            : ''
                         )}
                         onClick={() => {
                           onSymbolSelect?.(symbol.name);
                           onClose();
                         }}
+                        onMouseEnter={() => setSelectedIndex(index)}
                       >
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-3">
+                            {/* Favorite Star */}
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 toggleFavorite(symbol.name);
                               }}
-                              className="text-muted-foreground hover:text-foreground transition-colors"
+                              className="text-muted-foreground hover:text-foreground transition-colors p-0.5"
                             >
                               <Star
                                 className={cn(
-                                  "w-3 h-3 transition-colors",
+                                  "w-3.5 h-3.5 transition-colors",
                                   favorites.has(symbol.name) || symbol.favorite
                                     ? "text-yellow-500 fill-yellow-500"
                                     : ""
                                 )}
                               />
                             </button>
+                            
+                            {/* Symbol Information */}
                             <div className="flex items-center space-x-2">
-                              <span className="font-medium text-sm text-foreground">{symbol.name}</span>
-                              <span className="text-xs text-muted-foreground">-</span>
-                              <span className="text-xs text-muted-foreground">{symbol.description}</span>
+                              <span className="font-semibold text-base text-foreground">{symbol.name}</span>
+                              <span className="text-sm text-muted-foreground">-</span>
+                              <span className="text-base text-muted-foreground">{symbol.description}</span>
                             </div>
                           </div>
                         </div>
@@ -237,17 +254,15 @@ export function SymbolPopup({ onClose, onSymbolSelect }: SymbolPopupProps) {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <div className={cn(
-                      "text-lg",
-                      theme === 'dark' ? 'text-gray-500' : 'text-gray-400'
-                    )}>No symbols found</div>
-                    <div className={cn(
-                      "text-sm mt-2",
-                      theme === 'dark' ? 'text-gray-600' : 'text-gray-400'
-                    )}>Try adjusting your search or filters</div>
+                    <div className="text-lg text-muted-foreground">No symbols found</div>
+                    <div className="text-sm mt-2 text-muted-foreground">
+                      Try adjusting your search or filters
+                    </div>
                   </div>
                 )}
               </div>
+              
+              {/* Hide scrollbar styles */}
               <style jsx>{`
                 .flex-1::-webkit-scrollbar {
                   display: none;

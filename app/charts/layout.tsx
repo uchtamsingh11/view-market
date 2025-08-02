@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { ChartsThemeProvider } from '@/lib/charts-theme-context'
 
 export const metadata: Metadata = {
   title: 'Charts | ViewMarket',
@@ -10,5 +11,9 @@ export default function ChartsLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return (
+    <ChartsThemeProvider>
+      {children}
+    </ChartsThemeProvider>
+  )
 }

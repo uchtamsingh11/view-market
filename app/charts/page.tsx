@@ -7,6 +7,8 @@ import RightPanel from '@/components/right-panel'
 import { PageTransition } from '@/components/page-transition'
 import { TradingViewChart } from '@/components/TradingViewChart'
 import { useState, useEffect, useRef } from 'react'
+import { motion, useMotionValue, PanInfo, useTransform } from 'framer-motion'
+import { generateNifty50MockData } from '@/lib/mock-data'
 
 // Note: Metadata export moved to separate file due to client component
 // export const metadata: Metadata = {
@@ -18,6 +20,13 @@ export default function ChartsPage() {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [showCrosshair, setShowCrosshair] = useState(true)
   const fullscreenRef = useRef<HTMLDivElement>(null)
+  const [mockData, setMockData] = useState<any[]>([])
+  const footerHeight = useMotionValue(40) // Initial height of the footer
+    const chartContainerHeight = useTransform(footerHeight, height => `calc(100% - ${height}px)`)
+
+  useEffect(() => {
+    setMockData(generateNifty50MockData())
+  }, [])
 
   // Handle fullscreen change events
   useEffect(() => {
@@ -101,36 +110,46 @@ export default function ChartsPage() {
       enterFullscreen()
     }
   }
-
-  return (
-    <PageTransition>
-      <div 
-        ref={fullscreenRef}
-        className={`${isFullscreen ? 'h-screen' : 'h-screen'} bg-background overflow-hidden ${isFullscreen ? '' : 'flex flex-col'}`}
-      >
-        <ChartsHeader isFullscreen={isFullscreen} onToggleFullscreen={toggleFullscreen} />
-        
-        {isFullscreen ? (
-          // Fullscreen mode - only chart, no footer or right panel
-          <main className="absolute inset-0 top-12 overflow-hidden" style={{ padding: 0, margin: 0 }}>
-            <TradingViewChart showCrosshair={showCrosshair} />
-          </main>
-        ) : (
-          // Normal mode - with footer and right panel
-          <>
-            {/* Main Content Area with Right Panel */}
-            <div className="flex-1 relative">
-              {/* Chart Container aligned perfectly with right panel */}
-              <main className="absolute inset-0 right-12 overflow-hidden" style={{ padding: 0, margin: 0 }}>
-                <TradingViewChart showCrosshair={showCrosshair} />
-              </main>
-              <RightPanel showCrosshair={showCrosshair} onToggleCrosshair={() => setShowCrosshair(!showCrosshair)} />
-            </div>
-            
-            <ChartsFooter />
-          </>
-        )}
-      </div>
-    </PageTransition>
-  )
-}
+ 
+  const handlePan = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
+    const newHeight = footerHeight.get() - info.delta.y
+    const newHeightClamped = Math.max(
+      40,
+      Math.min(newHeight, window.innerHeight)
+    )
+    footerHeight.set(newHeightClamped)
+  }
+ 
+   return (
+     <PageTransition>
+       <div
+         ref={fullscreenRef}
+         className={`${isFullscreen ? 'h-dvh' : 'h-dvh'} bg-background overflow-hidden ${isFullscreen ? '' : 'flex flex-col'}`}
+       >
+         <ChartsHeader isFullscreen={isFullscreen} onToggleFullscreen={toggleFullscreen} />
+ 
+         {isFullscreen ? (
+           <main className="absolute inset-0 top-12 overflow-hidden" style={{ padding: 0, margin: 0 }}>
+             <TradingViewChart showCrosshair={showCrosshair} data={mockData} />
+           </main>
+         ) : (
+           <div className="flex-1 relative">
+             <motion.div
+               className="absolute inset-0"
+               style={{ height: chartContainerHeight }}
+             >
+               <main className="absolute inset-0 right-12 overflow-hidden" style={{ padding: 0, margin: 0 }}>
+                 <TradingViewChart showCrosshair={showCrosshair} data={mockData} />
+               </main>
+               <RightPanel showCrosshair={showCrosshair} onToggleCrosshair={() => setShowCrosshair(!showCrosshair)} />
+             </motion.div>
+             <ChartsFooter footerHeight={footerHeight} onPan={handlePan} />
+           </div>
+         )}
+       </div>
+     </PageTransition>
+   )
+ }

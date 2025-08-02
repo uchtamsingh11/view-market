@@ -268,11 +268,13 @@ export function CalendarPopup({ onClose, onEventSelect }: CalendarPopupProps) {
   ).length;
 
   return (
-    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className={cn(
         "w-full max-w-4xl h-[650px] rounded-lg shadow-xl overflow-hidden",
         "bg-background"
-      )}>
+      )}
+      onClick={(e) => e.stopPropagation()}
+      >
         <div className="p-4 border-b border-border bg-background">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">

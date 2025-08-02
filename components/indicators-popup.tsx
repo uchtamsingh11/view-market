@@ -124,11 +124,13 @@ export function IndicatorsPopup({ onClose, onIndicatorSelect }: IndicatorsPopupP
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className={cn(
         "w-full max-w-4xl h-[650px] rounded-lg shadow-xl overflow-hidden",
         "bg-background"
-      )}>
+      )}
+      onClick={(e) => e.stopPropagation()}
+      >
         <div className="p-4 border-b border-border bg-background">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-medium text-foreground">Select Indicator</h2>

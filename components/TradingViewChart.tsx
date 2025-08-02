@@ -1,15 +1,50 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import { IChartApi } from 'lightweight-charts';
+import { IChartApi, LineStyle, CrosshairMode, CandlestickData as LightweightCandlestickData, UTCTimestamp } from 'lightweight-charts';
+import { useTheme } from '@/lib/theme-context';
+
+interface CandlestickData {
+  datetime: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+}
 
 interface TradingViewChartProps {
   showCrosshair: boolean;
+  data: CandlestickData[];
 }
 
-export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
+export function TradingViewChart({ showCrosshair, data }: TradingViewChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<IChartApi | null>(null)
+  const { theme } = useTheme()
+
+  const applyTheme = () => {
+    if (!chartRef.current) return;
+
+    const isDark = theme === 'dark';
+
+    chartRef.current.applyOptions({
+      layout: {
+        background: { color: 'transparent' },
+        textColor: isDark ? 'rgba(255, 255, 255, 0.8)' : '#1f2937',
+      },
+      grid: {
+        vertLines: { color: isDark ? 'rgba(255, 255, 255, 0.1)' : '#e2e8f0' },
+        horzLines: { color: isDark ? 'rgba(255, 255, 255, 0.1)' : '#e2e8f0' },
+      },
+      rightPriceScale: {
+        borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : '#e2e8f0',
+      },
+      timeScale: {
+        borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : '#e2e8f0',
+      },
+    });
+  };
+
 
   useEffect(() => {
     if (!chartContainerRef.current) return
@@ -17,7 +52,7 @@ export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
     // Dynamic import to avoid SSR issues
     const initChart = async () => {
       try {
-        const { createChart, CrosshairMode } = await import('lightweight-charts')
+        const { createChart } = await import('lightweight-charts')
         
         // Wait for the container to be properly sized
         await new Promise(resolve => setTimeout(resolve, 100))
@@ -30,19 +65,10 @@ export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
         const chart = createChart(chartContainerRef.current!, {
           width: containerWidth,
           height: containerHeight,
-          layout: {
-            background: { color: 'transparent' },
-            textColor: '#1f2937',
-          },
-          grid: {
-            vertLines: { color: '#e2e8f0' },
-            horzLines: { color: '#e2e8f0' },
-          },
           crosshair: {
             mode: showCrosshair ? CrosshairMode.Normal : CrosshairMode.Hidden,
           },
           rightPriceScale: {
-            borderColor: '#e2e8f0',
             autoScale: true,
             scaleMargins: {
               top: 0.1,
@@ -58,7 +84,6 @@ export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
             visible: false,
           },
           timeScale: {
-            borderColor: '#e2e8f0',
             timeVisible: true,
             secondsVisible: false,
             barSpacing: 6,
@@ -80,31 +105,24 @@ export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
 
         chartRef.current = chart
 
-        const lineSeries = chart.addLineSeries({
-          color: '#2962FF',
-          lineWidth: 2,
-        })
-        
-        // Apply scale margins directly to the series price scale
-        lineSeries.priceScale().applyOptions({
-          scaleMargins: {
-            top: 0.05,
-            bottom: 0.05,
-          },
-        })
-        
-        lineSeries.setData([
-          { time: '2023-12-01', value: 154.15 },
-          { time: '2023-12-02', value: 152.18 },
-          { time: '2023-12-03', value: 153.40 },
-          { time: '2023-12-04', value: 151.20 },
-          { time: '2023-12-05', value: 150.70 },
-          { time: '2023-12-06', value: 152.25 },
-          { time: '2023-12-07', value: 154.80 },
-          { time: '2023-12-08', value: 156.45 },
-          { time: '2023-12-09', value: 158.30 },
-          { time: '2023-12-10', value: 160.15 },
-        ])
+        const candlestickSeries = chart.addCandlestickSeries({
+          upColor: '#26a69a',
+          downColor: '#ef5350',
+          borderDownColor: '#ef5350',
+          borderUpColor: '#26a69a',
+          wickDownColor: '#ef5350',
+          wickUpColor: '#26a69a',
+        });
+
+        const formattedData = data.map(item => ({
+          time: (new Date(item.datetime).getTime() / 1000) as UTCTimestamp,
+          open: item.open,
+          high: item.high,
+          low: item.low,
+          close: item.close,
+        }));
+
+        candlestickSeries.setData(formattedData);
 
         const handleResize = () => {
           if (chartContainerRef.current && chart) {
@@ -135,6 +153,9 @@ export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
         }
 
         window.addEventListener('resize', handleResize)
+        
+        applyTheme();
+
 
         return () => {
           window.removeEventListener('resize', handleResize)
@@ -151,11 +172,10 @@ export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
     return () => {
       cleanup?.then(cleanupFn => cleanupFn?.())
     }
-  }, [])
+  }, [data])
 
   useEffect(() => {
     if (chartRef.current) {
-      const { CrosshairMode } = require('lightweight-charts');
       chartRef.current.applyOptions({
         crosshair: {
           mode: showCrosshair ? CrosshairMode.Normal : CrosshairMode.Hidden,
@@ -163,6 +183,10 @@ export function TradingViewChart({ showCrosshair }: TradingViewChartProps) {
       })
     }
   }, [showCrosshair])
+
+  useEffect(() => {
+    applyTheme();
+  }, [theme]);
 
   return (
     <div

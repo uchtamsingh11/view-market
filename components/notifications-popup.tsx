@@ -124,6 +124,7 @@ export function NotificationsPopup({ onClose, onNotificationSelect }: Notificati
     new Set(placeholderNotifications.filter(notif => notif.favorite).map(notif => notif.id))
   );
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
 
   const toggleFavorite = (notificationId: string) => {
     setFavorites(prev => {
@@ -228,6 +229,19 @@ export function NotificationsPopup({ onClose, onNotificationSelect }: Notificati
     searchInputRef.current?.focus();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
+
   const getTypeIcon = (type: string, priority: string) => {
     const iconClass = cn(
       "w-4 h-4",
@@ -266,10 +280,13 @@ export function NotificationsPopup({ onClose, onNotificationSelect }: Notificati
 
   return (
     <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className={cn(
-        "w-full max-w-4xl h-[650px] rounded-lg shadow-xl overflow-hidden",
-        "bg-background"
-      )}>
+      <div
+        ref={popupRef}
+        className={cn(
+          "w-full max-w-4xl h-[650px] rounded-lg shadow-xl overflow-hidden",
+          "bg-background"
+        )}
+      >
         <div className="p-4 border-b border-border bg-background">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">

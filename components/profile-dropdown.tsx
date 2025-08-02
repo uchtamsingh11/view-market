@@ -9,7 +9,8 @@ import {
   Keyboard, 
   Sparkles, 
   CreditCard,
-  User
+  User,
+  LogOut
 } from 'lucide-react'
 
 interface ProfileDropdownProps {
@@ -32,6 +33,12 @@ export function ProfileDropdown({ onClose }: ProfileDropdownProps) {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [onClose])
+
+  const handleLogout = () => {
+    // Simulate logout process
+    router.push('/')
+    onClose()
+  }
 
   const menuItems = [
     {
@@ -76,6 +83,12 @@ export function ProfileDropdown({ onClose }: ProfileDropdownProps) {
         console.log('Pricing clicked')
         onClose()
       }
+    },
+    {
+      label: 'Logout',
+      icon: LogOut,
+      onClick: handleLogout,
+      className: 'text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950'
     }
   ]
 
@@ -91,7 +104,7 @@ export function ProfileDropdown({ onClose }: ProfileDropdownProps) {
             <button
               key={index}
               onClick={item.onClick}
-              className="w-full px-4 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground flex items-center gap-3 transition-colors"
+              className={`w-full px-4 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground flex items-center gap-3 transition-colors ${item.className || ''}`}
             >
               <IconComponent className="w-4 h-4" />
               {item.label}
